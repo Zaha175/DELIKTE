@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPU Întrebări și Răspunsuri</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .questions {
+            flex: 1;
+            min-width: 300px;
+            height: 90vh;
+            overflow-y: auto;
+        }
+        .answers {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            height: 90vh;
+            overflow-y: auto;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: none;
+            background: #0066cc;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .questions, .answers {
+                height: auto;
+                max-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="questions">
+            <input type="text" class="search-box" id="searchBox" placeholder="Caută întrebări..." onkeyup="searchQuestions()">
+            <div id="questionsList">
+                <!-- Întrebările vor fi adăugate prin JavaScript -->
+            </div>
+        </div>
+        <div class="answers" id="answerBox">
+            <p>Alegeți o întrebare pentru a vedea răspunsul...</p>
+        </div>
+    </div>
+
+    <script>
+        const qa_data = [
+            {
+                "question": "De ce ați condus la 3 iulie 2016, Vineri?",
+                "answer": "La 3 iulie 2016, Vineri, ora 18.00, am condus peste semaforul roșu. Am făcut un accident. Locul delictului: 12629 Berlin, Zossener Str./ Alte Hellersdorfer Str. Amendă: 240 euro Puncte: 2 Am condus spre un magazin, am fost neatent! Am făcut un accident Îmi pare rău! Am învăţat: În primul rând verific traseul din timp, îmi planific drumul din timp!"
+            },
+            {
+                "question": "De ce ați condus la 24.03.2017, Vineri?",
+                "answer": "La 24.03.2017, Vineri, am condus un autovehicul cu numărul de înmatriculare românesc AB-88-HDL pe strada Walter-Rathenau din Villingen-Schwenningen la ora 16:30, deși știam că permisul de conducere îmi fusese confiscat după un incident anterior de conducere sub influența alcoolului. Am parcat greșit la parcarea din fața hotelului, am vrut să parchez mașina in altă parte! Cât de periculos a fost să conduceți la negru! Foarte periculos, nervos, neasigurat, fac mult mai repede un accident! Am învăţat: Vreau să respect legea în viitor!"
+            },
+            {
+                "question": "De ce ați condus la 20.02.2018, Marți?",
+                "answer": "La 20.02.2018, Marți, am condus în Eybach cu o viteză de 76 km/h, unde limita de viteză permisă era de 50 km/h. Proprietarul vehiculului m-a identificat ca fiind şoferul la momentul faptei. Nu aveam un permis de conducere valabil și eram sub interdicţia de a conduce până la 14 iulie 2018. M-am grăbit la muncă pentru a ajunge la timp să predau mașina. Cât de periculos este să conduci prea repede! Cu cât sunt mai rapid, cu atât distanța de frânare este mai mare (la viteză dublă, distanța de frânare este de patru ori mai mare), nu știam asta la momentul respectiv. La 50 km/h distanța de frânare este de 25 de metri, la 100 km/h este de 100 de metri. Am fost un pericol pentru mine și alții, am înțeles, siguranța circulației este pe primul loc. Am învăţat: Verific mai des vitezometrul, Zona 30, Zona 60 mă țin de reguli, de viteza regulamentară."
+            },
+            {
+                "question": "De ce ați condus la 14.06.2019, Vineri?",
+                "answer": "La 14.06.2019, Vineri, am condus la negru un camion Daimler-Benz Sprinter pe strada Schiller din Geislingen an der Steige. În timpul conducerii țineam un telefon mobil negru la ureche și încărcătura din camion nu era asigurată corespunzător împotriva alunecării. Cât de periculos este să folosești un telefon mobil în timp ce conduci! Mă distrage de la atenția acordată traficului și drumului. Chiar și o secundă de neatenție poate duce la o tragedie. Am învăţat: Nu folosesc Mobil telefonul, numai prin dispozitiv de vorbit, folosesc căștile și când conduc privat și la lucru. Folosesc Mobil telefonul numai când vehiculul și motorul sunt oprite. Cât de periculos este încărcătura nesecurizată! Riscul ca încărcătura să se deplaseze sau să cadă în timpul condusului. Nu sunt asigurat dacă se întâmplă un accident, riscul de răsturnare a mașinii crește in cazul manevrelor bruște. Am învăţat: Încărcătura trebuie să fie fixată în mod corespunzător. Îmi iau mai mult timp acum."
+            },
+            {
+                "question": "De ce ați condus la 01.08.2019, Joi?",
+                "answer": "La 01.08.2019, Joi, am condus un autoturism Audi Q5 pe strada Schwage din Giengen an der Brenz. Am parcat pe locul de parcare al secției de poliție Giengen, deși nu aveam permisul de conducere necesar. Am fost chemat ca martor la un accident! Am vrut să fac un bine, clar, a fost fals conducând fără drept de condus! Cât de periculos a fost să conduceți la negru! Foarte periculos, nervos, neasigurat, fac mult mai repede un accident! Am învăţat: Vreau să respect legea in viitor!"
+            },
+            {
+                "question": "De ce ați condus la 14.06.2021, Luni?",
+                "answer": "La 14.06.2021, Luni, am condus un autoturism Audi pe strada Lonetal din Giengen an der Brenz, deși nu aveam permisul de conducere necesar. Mi-am dus copilul la medic în Sontheim. De ce este periculos? Conduc prea repede, fac mai repede un accident! Am învăţat: În astfel de cazuri, aș apela imediat la serviciile de urgență prin 112, fără să încerc să conduc eu însumi fără permis."
+            }
+        ];
+
+        function createButtons() {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            qa_data.forEach((item) => {
+                const button = document.createElement('button');
+                button.textContent = item.question;
+                button.onclick = () => showAnswer(item.question);
+                questionsList.appendChild(button);
+            });
+        }
+
+        function showAnswer(question) {
+            const answer = qa_data.find(item => item.question === question).answer;
+            document.getElementById('answerBox').innerHTML = `
+                <h3>${question}</h3>
+                <p>${answer}</p>
+            `;
+        }
+
+        function searchQuestions() {
+            const searchText = document.getElementById('searchBox').value.toLowerCase();
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            
+            qa_data.forEach(item => {
+                if (item.question.toLowerCase().includes(searchText)) {
+                    const button = document.createElement('button');
+                    button.textContent = item.question;
+                    button.onclick = () => showAnswer(item.question);
+                    questionsList.appendChild(button);
+                }
+            });
+        }
+
+        // Construirea inițială a întrebărilor
+        createButtons();
+    </script>
+</body>
+</html>
